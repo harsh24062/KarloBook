@@ -1,7 +1,11 @@
+import HomeFront from "../components/HomeFront"
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <>
+      <HomeFront />
+      
+    </>
   )
 }
 
