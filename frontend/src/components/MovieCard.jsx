@@ -8,7 +8,7 @@ const MovieCard = ({movie}) => {
 
   return (
     <div className="flex flex-col justify-between p-3 bg-gray-800 rounded-2xl
-     hover:-translate-y-1 transition duration-300 w-64">
+     hover:-translate-y-1 transition duration-300 w-full max-w-[270px] sm:max-w-none">
        {/* Thumbnail */}
       <img src={movie.backdrop_path} alt="Thumbnail_Picture" className="rounded-lg h-52 w-full
        object object-right-bottom cursor-pointer" onClick={()=>{navigate(`/movies/${movie._id}`); scrollTo(0,0);}}/>
