@@ -1,10 +1,72 @@
-
 const Footer = () => {
   return (
-    <div>
-        <h1>Footer</h1>
-    </div>
-  )
-}
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        * {
+          font-family: 'Poppins', sans-serif;
+        }
+      `}</style>
 
-export default Footer
+      <footer className="flex flex-col items-center justify-around w-full py-16 text-sm bg-black text-gray-300 mt-8">
+        {/* Navigation links */}
+        <div className="flex flex-wrap justify-center gap-8">
+          <a href="/" className="font-medium text-gray-400 hover:text-white transition-all">
+            Home
+          </a>
+          <a href="/movies" className="font-medium text-gray-400 hover:text-white transition-all">
+            Movies
+          </a>
+          <a href="/" className="font-medium text-gray-400 hover:text-white transition-all">
+            Services
+          </a>
+          <a href="/" className="font-medium text-gray-400 hover:text-white transition-all">
+            Contact
+          </a>
+          <a href="/" className="font-medium text-gray-400 hover:text-white transition-all">
+            Help
+          </a>
+        </div>
+
+        {/* Social icons */}
+        <div className="flex items-center gap-4 mt-8 text-indigo-400">
+          {/* LinkedIn */}
+          <a href="https://www.linkedin.com/in/harsh-rajput-b04aa8269/"  target="_blank" rel="noopener noreferrer" className="hover:-translate-y-0.5 transition-all duration-300">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg" className="stroke-current">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6M6 9H2v12h4zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+
+          {/* Twitter */}
+          <a href="https://x.com/harsh021g" target="_blank" rel="noopener noreferrer" className="hover:-translate-y-0.5 transition-all duration-300">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg" className="stroke-current">
+              <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+
+          {/* GitHub */}
+          <a href="https://github.com/harsh24062" target="_blank" rel="noopener noreferrer" className="hover:-translate-y-0.5 transition-all duration-300">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg" className="stroke-current">
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M9 18c-4.51 2-5-2-7-2"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Copyright */}
+        <p className="mt-8 text-center text-gray-400">
+          Follow me on LinkedIn/Twitter/Github
+        </p>
+      </footer>
+    </>
+  );
+};
+
+export default Footer;

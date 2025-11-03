@@ -1,14 +1,10 @@
 import marvelLogo from './marvelLogo.svg'
-import googlePlay from './googlePlay.svg'
-import appStore from './appStore.svg'
 import screenImage from './screenImage.svg'
 import profile from './profile.png'
 import logo from './KarloBook.png'
 
 export const assets = {
     marvelLogo,
-    googlePlay,
-    appStore,
     screenImage,
     profile,
     logo
