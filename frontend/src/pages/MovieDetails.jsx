@@ -23,6 +23,7 @@ const MovieDetails = () => {
 
   return show ? (
     <div className="px-6 md:px-16 lg:px-40 pt-30 md:pt-50">
+      {/* Movie Info */}
       <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto">
          {/* Movie Poster */}
          <img src={show.movie.poster_path} alt="Movie_Picture" className="
@@ -59,6 +60,29 @@ const MovieDetails = () => {
             </div>
           </div>
       </div>
+
+     {/* Favorite Cast Portion */}
+<p className="text-lg font-medium mt-20">Your Favorite Cast</p>
+
+<div className="overflow-x-auto no-scrollbar mt-8 pb-4">
+  <div className="flex items-center gap-4 w-max px-4 snap-x snap-mandatory">
+    {show.movie.casts.slice(0, 12).map((cast, index) => (
+      <div
+        key={index}
+        className="flex flex-col items-center text-center flex-shrink-0 snap-center"
+      >
+        <img
+          src={cast.profile_path}
+          alt="cast_image"
+          className="rounded-full h-20 w-20 aspect-square object-cover"
+        />
+        <p className="font-medium text-sm mt-3">{cast.name}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+
     </div>
   ):(
     <div>
