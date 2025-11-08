@@ -5,18 +5,23 @@ import { HeartIcon, PlayCircleIcon, StarIcon } from "lucide-react"
 import calcTime from "../lib/calcTime"
 import DateSelect from "../components/DateSelect"
 import BlurEffect from "../components/BlurEffect"
+import MovieCard from "../components/MovieCard"
+import { useNavigate } from "react-router-dom"
 
 const MovieDetails = () => {
 
   const {id} = useParams()
   const [show,setShow] = useState(null)
+  const navigate = useNavigate()
 
   const getShow = () =>{
    const show = dummyShowsData.find(show => show._id === id)
-   setShow({
-    movie: show,
-    dateTime: dummyDateTimeData
-   })
+   if(show){
+      setShow({
+       movie: show,
+       dateTime: dummyDateTimeData
+     })
+   }
   }
 
   useEffect(()=>{
@@ -86,6 +91,16 @@ const MovieDetails = () => {
   <BlurEffect />
     {/* Select Date */}
     <DateSelect dateTime={show.dateTime} id={id}/>
+    {/* recommended movies */}  
+    <p className="text-lg font-medium mt-20 mb-8">You May Also Like</p>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      {dummyShowsData.slice(0,4).map((movie,index) => <MovieCard key={index} movie={movie}/>)}
+    </div>
+    {/* Show more Button */}
+    <div className="flex justify-center mt-20">
+      <button onClick={() => {navigate('/movies'); scrollTo(0,0);}} className="px-10 py-3 text-md bg-primary 
+        hover:bg-primary-dull font-medium rounded-md cursor-pointer">Show more</button>
+    </div>
 
     </div>
   ):(
