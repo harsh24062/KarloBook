@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom"
 import { dummyDateTimeData, dummyShowsData } from "../assets/assets"
 import { HeartIcon, PlayCircleIcon, StarIcon } from "lucide-react"
 import calcTime from "../lib/calcTime"
+import DateSelect from "../components/DateSelect"
+import BlurEffect from "../components/BlurEffect"
 
 const MovieDetails = () => {
 
@@ -81,7 +83,9 @@ const MovieDetails = () => {
     ))}
   </div>
 </div>
-
+  <BlurEffect />
+    {/* Select Date */}
+    <DateSelect dateTime={show.dateTime} id={id}/>
 
     </div>
   ):(
