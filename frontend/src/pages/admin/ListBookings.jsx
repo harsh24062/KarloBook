@@ -7,7 +7,7 @@ import isoTimeFormat from "../../lib/isoTimeFormat"
 
 const ListBookings = () => {
 
-   const currency = import.meta.env.VITE_CURRENCY
+  const currency = import.meta.env.VITE_CURRENCY
   
   const [loading,setLoading] = useState(true)
   const [bookings,setBookings] = useState([])
