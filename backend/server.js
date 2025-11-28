@@ -2,6 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import connectDB from './config/db.js'
 import dotenv from "dotenv";
+import { clerkMiddleware } from '@clerk/express'
+import { functions, inngest } from "./inngest/index.js"
+import { serve } from "inngest/express"
 
 // read .env file
 dotenv.config()
@@ -15,12 +18,15 @@ await connectDB()
 // Middleware
 app.use(express.json())
 app.use(cors())
+app.use(clerkMiddleware())
 
 app.get("/",(req,res)=>{
     return res.json({
         msg:"Hi there"
     })
 })
+
+app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.listen(port,()=>{
     console.log("Server started at port:",port)
