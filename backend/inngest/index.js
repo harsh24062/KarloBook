@@ -1,7 +1,7 @@
 // from Inngest Docs, Ignore 2. Step
 
 import { Inngest } from "inngest";
-import userModel from "../model/User"
+import userModel from "../model/User.js"
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "movie-ticket-booking" });
