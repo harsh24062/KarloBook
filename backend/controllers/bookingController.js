@@ -67,7 +67,7 @@ export const getOccupiedSeats = async (req,res) => {
 
     res.json({success:true, occupiedSeats})
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.json({success:false,message:error.message})
   }
 }
