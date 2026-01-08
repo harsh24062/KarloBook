@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react"
 import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, UsersIcon, StarIcon } from "lucide-react"
-import { dummyDashboardData } from "../../assets/assets"
 import Loading  from "../../components/Loading"
 import Title from "../../components/admin/Title"
 import dateFormat from "../../lib/dateFormat"
 import isoTimeFormat from "../../lib/isoTimeFormat"
+import { useAppContext } from "../../context/AppContext"
+import toast from "react-hot-toast"
 
 const DashBoard = () => {
+  
+  const {user, axios, getToken, image_base_url} = useAppContext()
 
   const currency = import.meta.env.VITE_CURRENCY
   const [loading,setLoading] = useState(true)
@@ -25,14 +28,29 @@ const DashBoard = () => {
     {title:"Total Users", value: dashBoardData.totalUser || "0", icon: UsersIcon},
   ]
 
-  const fetchDashBoardData = () => {
-    setDashBoardData(dummyDashboardData)
-    setLoading(false)
+  const fetchDashBoardData = async () => {
+    try {
+      const {data} = await axios.get("/api/admin/dashboard",{
+        headers:{
+          Authorization:`Bearer ${await getToken()}`
+        }
+      })
+      if(data.success){
+        setDashBoardData(data.dashboardData)
+        setLoading(false)
+      }else{
+        toast(data.message)
+      }
+    } catch (error) {
+      toast.error("Error fetching dashBoard data: ",error)
+    }
   }
 
   useEffect(()=>{
+    if(user){
     fetchDashBoardData()
-  },[])
+    }
+  },[user])
 
   return !loading ? (
     <>
@@ -59,7 +77,7 @@ const DashBoard = () => {
             {dashBoardData.activeShows.map((show)=>(
                <div key={show._id} className="w-56 rounded-lg overflow-hidden 
                 h-full pb-3 bg-primary/10 border border-primary/20 hover:translate-y-1 transition duration-300">
-                 <img src={show.movie.poster_path} alt="movie_poster" className="h-60 w-full object-cover"/>
+                 <img src={image_base_url + show.movie.poster_path} alt="movie_poster" className="h-60 w-full object-cover"/>
                  <p className="font-medium p-2 truncate">{show.movie.title}</p>
                  <div className="flex items-center justify-between px-2">
                     <p className="text-lg font-medium">{currency}{show.showPrice}</p>
