@@ -1,18 +1,20 @@
-import { dummyShowsData } from '../assets/assets'
 import BlurEffect from '../components/BlurEffect'
 import MovieCard from '../components/MovieCard'
 import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
 
 const Favorite = () => {
   
+  const {favoriteMovies} = useAppContext()
+
   const navigate = useNavigate()
 
-  return dummyShowsData.length > 0 ? (
+  return favoriteMovies.length > 0 ? (
     <div className='relative my-40 mb-60 px-6 md:px-16 lg:px-40 xl:px-44 
      overflow-hidden min-h-[80vh]'>
         <h1 className='text-lg font-medium text-gray-300 my-4'>Your Favorites</h1>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6'>
-          {dummyShowsData.map((movie,index)=>(
+          {favoriteMovies.map((movie,index)=>(
             <MovieCard movie={movie} key={index}/>
           ))}
         </div>
