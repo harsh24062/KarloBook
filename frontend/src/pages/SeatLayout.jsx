@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets'
+import { assets } from '../assets/assets'
 import Loading from '../components/Loading'
 import { ArrowRightIcon, ClockIcon } from 'lucide-react'
 import isoTimeFormat from '../lib/isoTimeFormat'
 import BlurEffect from '../components/BlurEffect'
 import toast from 'react-hot-toast'
+import { useAppContext } from '../context/AppContext'
 
 const SeatLayout = () => {
 
@@ -16,18 +17,63 @@ const SeatLayout = () => {
   const [selectedSeats,setSelectedSeats] = useState([])
   const [selectedTime,setSelectedTime] = useState(null)
   const [show,setShow] = useState(null)
+  const [occupiedSeats,setOccupiedSeats] = useState([])
+
+  const {user, axios, getToken} = useAppContext();
 
   const navigate = useNavigate()
 
-  const getShow = () => {
-    const curShow = dummyShowsData.find(show => show._id === id)
-    if(curShow){
-      setShow({
-        movie: curShow,
-        dateTime: dummyDateTimeData 
-      })
+  const getShow = async () => {
+    try {
+      const {data} = await axios.get(`/api/show/${id}`)
+      if(data.success){
+        setShow(data)
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
+
+  const getOccupiedSeats = async () =>{
+    try {
+      const {data} = await axios.get(`/api/booking/seats/${selectedTime.showId}`)
+      if(data.success){
+        setOccupiedSeats(data.occupiedSeats)
+      }else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const bookTickets = async()=>{
+   try {
+      if(!user) return toast.error("Please login first")
+      if(!selectedTime || !selectedSeats.length) return toast.error("Please select a time and seats")
+      
+        const {data} = await axios.post("api/booking/create",{showId:selectedTime.showId,selectedSeats},{
+          headers:{
+            Authorization:`Bearer ${await getToken()}`
+          }
+        })
+
+        if(data.success){
+          toast.success(data.message)
+          navigate("/my-bookings")
+        }else{
+          toast.error(data.message)
+        }
+      } catch (error) {
+      toast.error(error.message)
+   }
+  }
+
+  useEffect(()=>{
+    if(selectedTime){
+      getOccupiedSeats()
+    }
+  },[selectedTime])
 
   useEffect(()=>{
     getShow()
@@ -48,7 +94,8 @@ const SeatLayout = () => {
            const seatId = `${row}${i+1}`
            return(
             <button key={seatId} className={`h-8 w-8 rounded border 
-             border-primary/60 ${selectedSeats.includes(seatId) && "bg-primary text-white"}`}
+             border-primary/60 ${selectedSeats.includes(seatId) && "bg-primary text-white"} 
+             ${occupiedSeats.includes(seatId) && "opacity-50"}`}
              onClick={()=> handleSeatClick(seatId)}>
               {seatId}
             </button>
@@ -65,7 +112,9 @@ const SeatLayout = () => {
     if(!selectedSeats.includes(seatId) && selectedSeats.length>4){
       return toast("You cannot book more than 5 seats at a time")
     }
-    
+    if(occupiedSeats.includes(seatId)){
+      return toast.error("This seat is already booked")
+    }
     // select or unselect
 
     setSelectedSeats(prev => prev.includes(seatId)? prev.filter(seat => seat!=seatId): [...prev,seatId])
@@ -109,7 +158,7 @@ const SeatLayout = () => {
              </div>
            </div>
 
-          <button onClick={()=> {navigate("/my-bookings"); scrollTo(0,0);}} className='flex items-center gap-1 mt-20 px-10 py-3 text=sm 
+          <button onClick={bookTickets} className='flex items-center gap-1 mt-20 px-10 py-3 text=sm 
            bg-primary hover:bg-primary-dull transition rounded-full font-medium 
             cursor-pointer  active:scale-95'>
             Proceed to checkOut
