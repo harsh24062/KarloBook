@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom'
 import { StarIcon } from 'lucide-react'
 import calcTime from '../lib/calcTime'
+import { useAppContext } from '../context/AppContext'
 
 const MovieCard = ({movie}) => {
   
   const navigate = useNavigate()
+  const {image_base_url} = useAppContext()
 
   return (
     <div className="flex flex-col justify-between p-3 bg-gray-800 rounded-2xl
      hover:-translate-y-1 transition duration-300 w-full max-w-[270px] sm:max-w-none">
        {/* Thumbnail */}
-      <img src={movie.backdrop_path} alt="Thumbnail_Picture" className="rounded-lg h-52 w-full
+      <img src={image_base_url+movie.backdrop_path} alt="Thumbnail_Picture" className="rounded-lg h-52 w-full
        object object-right-bottom cursor-pointer" onClick={()=>{navigate(`/movies/${movie._id}`); scrollTo(0,0);}}/>
        {/* Title */}
        <p className='font-semibold text-xl mt-2 truncate'>{movie.title}</p>

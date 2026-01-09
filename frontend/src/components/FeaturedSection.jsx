@@ -1,12 +1,13 @@
 import { ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import BlurEffect from './BlurEffect'
-import { dummyShowsData } from '../assets/assets'
 import MovieCard from './MovieCard'
+import { useAppContext } from '../context/AppContext'
 
 const FeaturedSection = () => {
 
   const navigate = useNavigate()
+  const {shows} = useAppContext()
 
   return (
     <div className="px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden">
@@ -25,7 +26,7 @@ const FeaturedSection = () => {
         </div>
         {/* Show Movie card */}
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6'>
-          {dummyShowsData.slice(0,6).map(data => (<MovieCard key={data._id} movie={data}/>))}
+          {shows.slice(0,6).map(data => (<MovieCard key={data._id} movie={data}/>))}
         </div>
         {/* show more section */}
         <div className='flex justify-center mt-20'>
