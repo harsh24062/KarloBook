@@ -1,7 +1,9 @@
+import dotenv from "dotenv";
+// read .env file
+dotenv.config()
 import express from 'express'
 import cors from 'cors'
 import connectDB from './config/db.js'
-import dotenv from "dotenv";
 import { clerkMiddleware } from '@clerk/express'
 import { functions, inngest } from "./inngest/index.js"
 import { serve } from "inngest/express"
@@ -10,9 +12,6 @@ import bookingRouter from './routes/bookingRoutes.js';
 import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import { stripeWebhooks } from './controllers/stripeWebhooks.js';
-
-// read .env file
-dotenv.config()
 
 const app = express()
 const port = 3000

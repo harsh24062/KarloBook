@@ -80,7 +80,7 @@ export const createBooking = async (req,res) => {
         await booking.save()
         // run Inngest schedular Function to check payment status after 10 mintues
         await inngest.send({
-          name:"app/checkpayment",
+          name: "app/checkpayment",
           data:{
             bookingId:booking._id.toString()
           }

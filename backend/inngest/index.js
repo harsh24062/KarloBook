@@ -6,7 +6,9 @@ import Booking from "../model/Booking.js";
 import showModel from "../model/Show.js";
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ id: "movie-ticket-booking" });
+export const inngest = new Inngest({ id: "movie-ticket-booking",
+    eventKey:process.env.INNGEST_EVENT_KEY
+ });
 
 //Inngest Function to save user data to a database
 const userCreation = inngest.createFunction(
@@ -60,15 +62,15 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
         const tenMinutesLater = new Date(Date.now() + 10*60*1000)
         await step.sleepUntil("wait-for-10-mintues",tenMinutesLater)
         await step.run("check-payment-status",async()=>{
-          const bookingId = event.data.bookingId
-          const booking = await Booking.findById(bookingId)
+          const bookingId = event.data.bookingId;
+          const booking = await Booking.findById(bookingId);
 
           // if payment is not made, release seats and delete booking
           if(!booking.isPaid){
             const show = await showModel.findById(booking.show)
             booking.bookedSeats.forEach((seat)=>{
                 delete show.occupiedSeats[seat]
-            })
+            });
             show.markModified("occupiedSeats")
             await show.save()
             await Booking.findByIdAndDelete(booking._id)
@@ -78,4 +80,4 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
 )
 
 // Create an empty array where we'll export future Inngest functions
-export const functions = [releaseSeatsAndDeleteBooking,userCreation,userDeletion,userUpdation];
+export const functions = [userCreation,userDeletion,userUpdation,releaseSeatsAndDeleteBooking];
