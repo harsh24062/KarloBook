@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer"
 
+// used brevo for smtp
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
   port: 587,
