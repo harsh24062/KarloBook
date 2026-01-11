@@ -4,11 +4,10 @@ import { Inngest } from "inngest";
 import userModel from "../model/User.js"
 import Booking from "../model/Booking.js";
 import showModel from "../model/Show.js";
+import sendEmail from "../config/nodeMailer.js";
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ id: "movie-ticket-booking",
-    eventKey:process.env.INNGEST_EVENT_KEY
- });
+export const inngest = new Inngest({ id: "movie-ticket-booking"});
 
 //Inngest Function to save user data to a database
 const userCreation = inngest.createFunction(
@@ -79,5 +78,36 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
     }
 )
 
+// Inngest function to send mail when user books a show
+const sendBookingConfirmationEmail = inngest.createFunction(
+    {id:"send-booking-confirmation-email"},
+    {event:"app/show.booked"},
+    async({event,step})=>{
+      const {bookingId} = event.data
+      const booking = await Booking.findById(bookingId).populate({
+        path:"show",
+        populate:{path:"movie",model:"movie"}
+      }).populate("user")
+
+      await sendEmail({
+        to:booking.user.email,
+        subject:`Payment Confirmation: "${booking.show.movie.title}" booked!`,
+        body:`<div style="font-family:Arial,sans-serif; line-height:1.5;">
+               <h2>Hey ${booking.user.name}</h2>
+               <p>Your booking for <strong style="color:#F84565;">"${booking.show.movie.title}"</strong> is confirmed.</p>
+               <p>
+                 <strong>Date:</strong> ${new Date(booking.show.showDateTime).toLocaleDateString("en-US",{
+                  timeZone:"Asia/Kolkata"})}<br/>
+                 <strong>Date:</strong> ${new Date(booking.show.showDateTime).toLocaleTimeString("en-US",{
+                  timeZone:"Asia/Kolkata"})}
+               </p>
+               <p>Enjoy the Show! 🍿</p>
+               <p>Thanks for booking with us!<br/>-KarloBook by harsh chauhan</p>
+               <p>
+               </div>`
+      })
+    }
+)
+
 // Create an empty array where we'll export future Inngest functions
-export const functions = [userCreation,userDeletion,userUpdation,releaseSeatsAndDeleteBooking];
+export const functions = [sendBookingConfirmationEmail,userCreation,userDeletion,userUpdation,releaseSeatsAndDeleteBooking];
